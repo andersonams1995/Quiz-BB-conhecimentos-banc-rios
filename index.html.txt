@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Conhecimentos Bancários</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7fa;
+      color: #333;
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+    .question {
+      background: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .question h3 {
+      margin-bottom: 10px;
+    }
+    .option {
+      display: block;
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .option.correct {
+      background-color: #d4edda;
+      border-color: #28a745;
+      color: #155724;
+    }
+    .option.wrong {
+      background-color: #f8d7da;
+      border-color: #dc3545;
+      color: #721c24;
+    }
+    .score {
+      font-size: 1.2em;
+      font-weight: bold;
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quiz de Conhecimentos Bancários</h1>
+  <div id="quiz"></div>
+  <div class="score" id="score"></div>
+
+  <script>
+    const questions = [
+      {
+        question: "O mercado que opera a curto prazo destinando os recursos captados ao financiamento de consumo para pessoas físicas e capital de giro para pessoas jurídicas é o mercado:",
+        options: ["A) de ações", "B) de capitais", "C) de câmbio", "D) de crédito", "E) monetário"],
+        correct: 3
+      },
+      {
+        question: "O Sistema Financeiro Nacional é compreendido por:",
+        options: [
+          "A) agentes econômicos e não econômicos autorizados pela CVM",
+          "B) instituições financeiras e filantrópicas",
+          "C) dois subsistemas: um normativo e outro de intermediação financeira",
+          "D) um conjunto de ONGs, fundações e entidades",
+          "E) uma rede que visa empresas com déficit de caixa"
+        ],
+        correct: 2
+      },
+      {
+        question: "Uma das atribuições do Conselho Monetário Nacional (CMN) é:",
+        options: [
+          "A) estabelecer normas para o BACEN nas transações com títulos públicos",
+          "B) administrar carteiras de valores mobiliários",
+          "C) executar a política monetária",
+          "D) regular serviços de compensação",
+          "E) fornecer preço de referência de ativos"
+        ],
+        correct: 0
+      },
+      {
+        question: "O Banco Central adota Política Monetária Expansiva para baratear empréstimos através de:",
+        options: [
+          "A) venda de títulos públicos",
+          "B) elevação da taxa de juros",
+          "C) elevação do recolhimento compulsório",
+          "D) redução das taxas de juros",
+          "E) redução das linhas de crédito"
+        ],
+        correct: 3
+      },
+      {
+        question: "O Conselho Monetário Nacional é composto por:",
+        options: [
+          "A) Presidente do BNDES, Ministro da Justiça e Presidente da República",
+          "B) Presidente da CVM, Ministro da Fazenda e Ministro da Agricultura",
+          "C) Ministro da Fazenda, do Planejamento e Presidente do BACEN",
+          "D) Presidente do Banco do Brasil e Caixa",
+          "E) Presidente do Congresso, do Senado e do BACEN"
+        ],
+        correct: 2
+      },
+      {
+        question: "A taxa de juros fixada na reunião do COPOM é:",
+        options: [
+          "A) Selic acumulada do trimestre anterior",
+          "B) meta para a taxa Selic entre reuniões ordinárias",
+          "C) taxa mínima de empréstimos para bancos públicos",
+          "D) referência do IPCA",
+          "E) base de cálculo do IOF bancário"
+        ],
+        correct: 1
+      },
+      {
+        question: "O CRSFN julga em última instância recursos sobre:",
+        options: [
+          "A) tributos estaduais e municipais",
+          "B) leis eleitorais",
+          "C) penalidades do BACEN e CVM",
+          "D) salários mínimos e reajustes de aposentadorias",
+          "E) aprovação de empréstimos para o BNDES"
+        ],
+        correct: 2
+      },
+      {
+        question: "É uma função típica dos bancos comerciais:",
+        options: [
+          "A) emitir moeda",
+          "B) captação de depósitos à vista",
+          "C) controlar as taxas do CDI",
+          "D) operar a Selic",
+          "E) emitir títulos públicos"
+        ],
+        correct: 1
+      },
+      {
+        question: "Entre as atribuições do Banco Central do Brasil está:",
+        options: [
+          "A) fiscalizar órgãos municipais",
+          "B) realizar empréstimos para o público diretamente",
+          "C) controlar o fluxo de capitais estrangeiros",
+          "D) administrar o orçamento da União",
+          "E) supervisionar o IBGE"
+        ],
+        correct: 2
+      },
+      {
+        question: "A liquidez da economia refere-se:",
+        options: [
+          "A) à quantidade de empresas endividadas",
+          "B) à quantidade de dinheiro em circulação",
+          "C) ao saldo da balança comercial",
+          "D) aos investimentos externos",
+          "E) à confiança no setor privado"
+        ],
+        correct: 1
+      }
+    ];
+
+    let score = 0;
+    let errors = 0;
+
+    const quizEl = document.getElementById('quiz');
+    const scoreEl = document.getElementById('score');
+
+    questions.forEach((q, index) => {
+      const qEl = document.createElement('div');
+      qEl.className = 'question';
+
+      const title = document.createElement('h3');
+      title.textContent = `${index + 1}. ${q.question}`;
+      qEl.appendChild(title);
+
+      q.options.forEach((opt, i) => {
+        const optEl = document.createElement('div');
+        optEl.className = 'option';
+        optEl.textContent = opt;
+        optEl.onclick = () => {
+          if (optEl.classList.contains('correct') || optEl.classList.contains('wrong')) return;
+          if (i === q.correct) {
+            optEl.classList.add('correct');
+            score++;
+          } else {
+            optEl.classList.add('wrong');
+            qEl.querySelectorAll('.option')[q.correct].classList.add('correct');
+            errors++;
+          }
+          scoreEl.textContent = `Acertos: ${score} | Erros: ${errors}`;
+        };
+        qEl.appendChild(optEl);
+      });
+
+      quizEl.appendChild(qEl);
+    });
+  </script>
+</body>
+</html>
